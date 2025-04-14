@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Win Predictor | Cricket Match Analysis</title>
+    <link rel="stylesheet" href="po.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="theme-toggle">
+        <input type="checkbox" id="theme-switch" class="theme-switch">
+        <label for="theme-switch" class="theme-switch-label">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+            <span class="ball"></span>
+        </label>
+    </div>
+
+    <div class="page-wrapper">
+        <header class="main-header">
+            <div class="logo-container">
+                <img src="images\Logo.png" alt="IPL Logo" class="logo">
+                <h1 class="main-title">IPL Win Predictor</h1>
+            </div>
+            <p class="tagline">Predict match outcomes with machine learning precision</p>
+        </header>
+
+        <main class="main-content">
+            <section class="teams-section">
+                <div class="team-selection">
+                    <div class="team-card batting-team">
+                        <h2 class="section-title">Batting Team</h2>
+                        <div class="team-logo-container" id="batting-team-logo">
+                            <img src="images\Batting.jpeg" alt="Select Batting Team" class="team-logo">
+                        </div>
+                        <select id="batting-team" class="team-select">
+                            <option value="">Select Batting Team</option>
+                        </select>
+                    </div>
+                    
+                    <div class="versus-container">
+                        <div class="versus-circle">VS</div>
+                    </div>
+                    
+                    <div class="team-card bowling-team">
+                        <h2 class="section-title">Bowling Team</h2>
+                        <div class="team-logo-container" id="bowling-team-logo">
+                            <img src="images\bowling.jpg" alt="Select Bowling Team" class="team-logo">
+                        </div>
+                        <select id="bowling-team" class="team-select">
+                            <option value="">Select Bowling Team</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <section class="match-details-section">
+                <h2 class="section-title">Match Details</h2>
+                <div class="match-details-container">
+                    <div class="form-group venue-group">
+                        <label for="city">
+                            <i class="fas fa-map-marker-alt"></i> Venue
+                        </label>
+                        <select id="city" class="form-control">
+                            <option value="">Select Host City</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group target-group">
+                        <label for="target">
+                            <i class="fas fa-bullseye"></i> Target Score
+                        </label>
+                        <input type="number" id="target" class="form-control" min="0" placeholder="Enter target runs">
+                    </div>
+                </div>
+            </section>
+
+            <section class="current-status-section">
+                <h2 class="section-title">Current Match Status</h2>
+                <div class="status-container">
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-cricket"></i>
+                        </div>
+                        <label for="score">Current Score</label>
+                        <input type="number" id="score" class="form-control" min="0" placeholder="Runs scored">
+                    </div>
+                    
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-stopwatch"></i>
+                        </div>
+                        <label for="overs">Overs Completed</label>
+                        <input type="number" id="overs" class="form-control" min="0" max="20" step="0.1" placeholder="0.0 - 20.0">
+                    </div>
+                    
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <label for="wickets">Wickets Lost</label>
+                        <input type="number" id="wickets" class="form-control" min="0" max="10" placeholder="0 - 10">
+                    </div>
+                </div>
+            </section>
+
+            <section class="calculated-stats-section" id="calculated-stats">
+                <h2 class="section-title">Calculated Statistics</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-title">Runs Required</div>
+                        <div class="stat-value" id="runs-required">-</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Balls Remaining</div>
+                        <div class="stat-value" id="balls-remaining">-</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Current Run Rate</div>
+                        <div class="stat-value" id="current-rr">-</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Required Run Rate</div>
+                        <div class="stat-value" id="required-rr">-</div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="action-container">
+                <button id="calculate-stats" class="btn btn-secondary">
+                    <i class="fas fa-calculator"></i> Calculate Stats
+                </button>
+                <button id="predict-btn" class="btn btn-primary">
+                    <i class="fas fa-chart-line"></i> Predict Win Probability
+                </button>
+            </div>
+        </main>
+
+        <div id="result-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2 class="modal-title">Match Prediction Results</h2>
+                
+                <div class="prediction-container">
+                    <div class="teams-container">
+                        <div class="team-result" id="batting-team-result">
+                            <div class="team-name">Team 1</div>
+                            <div class="team-logo-container">
+                                <img src="images\Batting.jpeg" alt="Team 1" class="team-logo" id="result-batting-logo">
+                            </div>
+                        </div>
+                        
+                        <div class="prediction-meter-container">
+                            <div class="prediction-meter">
+                                <div class="meter-bar">
+                                    <div class="batting-meter" id="batting-meter"></div>
+                                    <div class="bowling-meter" id="bowling-meter"></div>
+                                </div>
+                                <div class="meter-labels">
+                                    <span id="batting-percentage">50%</span>
+                                    <span id="bowling-percentage">50%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="team-result" id="bowling-team-result">
+                            <div class="team-name">Team 2</div>
+                            <div class="team-logo-container">
+                                <img src="images\bowling.jpg" alt="Team 2" class="team-logo" id="result-bowling-logo">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="prediction-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Match Situation:</div>
+                            <div class="detail-value" id="match-situation">Balanced</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Key Factor:</div>
+                            <div class="detail-value" id="key-factor">Current run rate</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="prediction-summary" id="prediction-summary">
+                    Based on the current match situation, our model predicts a close contest between both teams.
+                </div>
+                
+                <button class="btn btn-primary share-btn">
+                    <i class="fas fa-share-alt"></i> Share Prediction
+                </button>
+            </div>
+        </div>
+
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="cricket-loader">
+                <div class="cricket-ball"></div>
+                <p>Calculating prediction...</p>
+            </div>
+        </div>
+
+        <div id="error-toast" class="error-toast">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="error-message">Error message goes here</div>
+            <div class="error-close">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+
+        <footer class="main-footer">
+            <div class="footer-content">
+                <p>&copy; 2023 IPL Win Predictor | Powered by Machine Learning</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">About</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Use</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="po.js"></script>
+</body>
+</html>
